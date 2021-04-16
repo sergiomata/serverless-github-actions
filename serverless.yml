@@ -1,0 +1,92 @@
+
+service: cicd
+
+app: cicd
+org: sergiomatamoons
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  project: cicd
+  memorySize: 1024 # optional, in MB, default is 1024
+  timeout: 60 # optional, in seconds, default is 6
+  stage: ${opt:stage,'dev'}
+  stackName: ${opt:stage,'dev'}-cicd-moons # Use a custom name for the CloudFormatiosn stack
+  apiGateway:
+    restApiId: ${param:API_GATEWAY_ID, env:API_GATEWAY_ID}
+    restApiRootResourceId: ${param:API_GATEWAY_RESOURCE_ID,env:API_GATEWAY_RESOURCE_ID}
+  #apiName: ${opt:stage, 'dev'}_crm # Use a custom name for the API Gateway API
+  deploymentBucket:
+    name: ${opt:stage,'dev'}-cicd-moons
+    serverSideEncryption: AES256
+  #deploymentPrefix: cicd
+  profile: ${self:custom.profiles.${opt:stage,'dev'}}
+  tracing:
+    lambda: true
+    apiGateway: true
+  enviroment:
+    API_GATEWAY_ID: ${param:API_GATEWAY_ID, env:API_GATEWAY_ID}
+    API_GATEWAY_RESOURCE_ID: ${param:API_GATEWAY_RESOURCE_ID, env:API_GATEWAY_RESOURCE_ID}
+    ENV: ${param:ENV, env:ENV}
+
+plugins:
+  - serverless-offline
+  - serverless-deployment-bucket
+  # - serverless-dotenv-plugin
+  - serverless-plugin-write-env-vars
+  - serverless-s3-remover
+
+custom:
+  webpack:
+    packager: "npm" # Packager that will be used to package your external modules
+    includeModules:
+      packagePath: ./package.json
+
+  remover:
+    buckets:
+      - ${opt:stage,'dev'}-cicd-moons
+
+  region: us-east-1
+  stage-default: "dev"
+
+  package:
+    exclude:
+      - .gitignore
+      - .git/**
+    individually: true
+    excludeDevDependencies: true
+
+  writeEnvVars:
+    API_GATEWAY_ID: ${param:API_GATEWAY_ID, ${file(./config.${self:provider.stage}.js):getEnvVars.API_GATEWAY_ID}}
+    API_GATEWAY_RESOURCE_ID: ${param:API_GATEWAY_RESOURCE_ID, ${file(./config.${self:provider.stage}.js):getEnvVars.API_GATEWAY_RESOURCE_ID}}
+    ENV: ${param:ENV, ${file(./config.${self:provider.stage}.js):getEnvVars.ENV}}
+
+  # dotenv:
+  #   path: ./.env.${opt:stage, 'development'}
+  #   include:
+  #     - API_GATEWAY_ID
+  #     - API_GATEWAY_RESOURCE_ID
+  #     - ENV
+
+  defaultStage: dev
+  profiles:
+    dev: dev
+    prod: prod
+
+functions:
+  hello:
+    name: ${self:provider.stage}-hello
+    handler: handler.hello
+    package:
+      individually: true
+    events:
+      - http:
+          path: /hello
+          method: post
+          cors: true
+          integration: lambda-proxy
+          response:
+            headers:
+              Access-Control-Allow-Headers: "*"
+              Access-Control-Allow-Origin: "*"
+              Access-Control-Allow-Credentials: false
