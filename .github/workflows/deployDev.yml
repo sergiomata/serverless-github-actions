@@ -1,7 +1,6 @@
 # Workflow for deploy devepment stage
-# 
 
-name: Deploy to development on merge branch
+name: Deploy to development on merge dev  branch
 'on':
   push:
     branches:
@@ -24,7 +23,7 @@ jobs:
     - name: Install NPM dependencies
       run: yarn
     - name: Deploy Lambda functions
-      run: sls deploy -s prod
+      run: yarn deploy_dev
       env:
         API_GATEWAY_ID: '${{ secrets.API_GATEWAY_ID }}'
         API_GATEWAY_RESOURCE_ID: '${{ secrets.API_GATEWAY_RESOURCE_ID }}'
