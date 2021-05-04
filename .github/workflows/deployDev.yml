@@ -6,9 +6,9 @@ name: Deploy to development on merge dev  branch
     branches:
       - dev
 jobs:
-  environment: dev 
-  deploy-prod:
+  deploy-dev:
     runs-on: ubuntu-latest
+    environment: dev 
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
