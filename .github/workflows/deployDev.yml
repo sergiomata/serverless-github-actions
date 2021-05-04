@@ -1,0 +1,30 @@
+# Workflow for deploy devepment stage
+# 
+
+name: Deploy to development on merge branch
+'on':
+  push:
+    branches:
+      - dev
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Install Serverless Framework
+      run: npm install -g serverless
+    - name: Serverless AWS authentication
+      run: sls config credentials --provider aws --key ${{ secrets.AWS_KEY }} --secret ${{ secrets.AWS_SECRET }}
+    - name: Serverless
+      uses: serverless/github-action@v1.53.0
+    - name: Install NPM dependencies
+      run: yarn
+    - name: Deploy Lambda functions
+      run: sls deploy -s prod
+      env:
+        API_GATEWAY_ID: '${{ secrets.API_GATEWAY_ID }}'
+        API_GATEWAY_RESOURCE_ID: '${{ secrets.API_GATEWAY_RESOURCE_ID }}'
+        ENV: '${{ secrets.ENV }}'
