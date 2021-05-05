@@ -1,7 +1,6 @@
 
 service: cicd
 app: cicd
-org: sergiomatamoons
 
 provider:
   name: aws
@@ -27,11 +26,12 @@ provider:
     API_GATEWAY_ID: ${env:API_GATEWAY_ID}
     API_GATEWAY_RESOURCE_ID: ${env:API_GATEWAY_RESOURCE_ID}
     ENV: ${env:ENV}
+useDotenv: true
 
 plugins:
   - serverless-offline
   - serverless-deployment-bucket
-  - serverless-dotenv-plugin
+  # - serverless-dotenv-plugin
   # - serverless-plugin-write-env-vars
   - serverless-s3-remover
 
@@ -60,11 +60,11 @@ custom:
   #   API_GATEWAY_RESOURCE_ID: ${param:API_GATEWAY_RESOURCE_ID, ${file(./config.${self:provider.stage}.js):getEnvVars.API_GATEWAY_RESOURCE_ID}}
   #   ENV: ${param:ENV, ${file(./config.${self:provider.stage}.js):getEnvVars.ENV}}
 
-  dotenv:
-    include:
-      - API_GATEWAY_ID
-      - API_GATEWAY_RESOURCE_ID
-      - ENV
+  # dotenv:
+  #   include:
+  #     - API_GATEWAY_ID
+  #     - API_GATEWAY_RESOURCE_ID
+  #     - ENV
 
   defaultStage: dev
   profiles:
