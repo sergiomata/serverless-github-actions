@@ -25,15 +25,15 @@ provider:
     lambda: true
     apiGateway: true
   enviroment:
-    API_GATEWAY_ID: ${param:API_GATEWAY_ID, env:API_GATEWAY_ID}
-    API_GATEWAY_RESOURCE_ID: ${param:API_GATEWAY_RESOURCE_ID, env:API_GATEWAY_RESOURCE_ID}
-    ENV: ${param:ENV, env:ENV}
+    API_GATEWAY_ID: ${env:API_GATEWAY_ID}
+    API_GATEWAY_RESOURCE_ID: ${env:API_GATEWAY_RESOURCE_ID}
+    ENV: ${env:ENV}
 
 plugins:
   - serverless-offline
   - serverless-deployment-bucket
-  # - serverless-dotenv-plugin
-  - serverless-plugin-write-env-vars
+  - serverless-dotenv-plugin
+  # - serverless-plugin-write-env-vars
   - serverless-s3-remover
 
 custom:
@@ -56,17 +56,16 @@ custom:
     individually: true
     excludeDevDependencies: true
 
-  writeEnvVars:
-    API_GATEWAY_ID: ${param:API_GATEWAY_ID, ${file(./config.${self:provider.stage}.js):getEnvVars.API_GATEWAY_ID}}
-    API_GATEWAY_RESOURCE_ID: ${param:API_GATEWAY_RESOURCE_ID, ${file(./config.${self:provider.stage}.js):getEnvVars.API_GATEWAY_RESOURCE_ID}}
-    ENV: ${param:ENV, ${file(./config.${self:provider.stage}.js):getEnvVars.ENV}}
+  # writeEnvVars:
+  #   API_GATEWAY_ID: ${param:API_GATEWAY_ID, ${file(./config.${self:provider.stage}.js):getEnvVars.API_GATEWAY_ID}}
+  #   API_GATEWAY_RESOURCE_ID: ${param:API_GATEWAY_RESOURCE_ID, ${file(./config.${self:provider.stage}.js):getEnvVars.API_GATEWAY_RESOURCE_ID}}
+  #   ENV: ${param:ENV, ${file(./config.${self:provider.stage}.js):getEnvVars.ENV}}
 
-  # dotenv:
-  #   path: ./.env.${opt:stage, 'development'}
-  #   include:
-  #     - API_GATEWAY_ID
-  #     - API_GATEWAY_RESOURCE_ID
-  #     - ENV
+  dotenv:
+    include:
+      - API_GATEWAY_ID
+      - API_GATEWAY_RESOURCE_ID
+      - ENV
 
   defaultStage: dev
   profiles:

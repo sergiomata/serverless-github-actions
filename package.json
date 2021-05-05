@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "serverless-dotenv-plugin": "^3.9.0",
     "serverless-plugin-write-env-vars": "^1.0.2"
   },
   "devDependencies": {

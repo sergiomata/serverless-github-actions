@@ -14,6 +14,13 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '10.x'
+    - name: Create env file
+      run: | # cp sample.env.yml env.yml
+        cat > .env << EOF
+        API_GATEWAY_ID='${{ secrets.API_GATEWAY_ID }}'
+        API_GATEWAY_RESOURCE_ID='${{ secrets.API_GATEWAY_RESOURCE_ID }}'
+        ENV='${{ secrets.ENV }}'
+        EOF
     - name: Install Serverless Framework
       run: npm install -g serverless
     - name: Install NPM dependencies
