@@ -22,7 +22,7 @@ jobs:
         ENV='${{ secrets.ENV }}'
         EOF
     - name: Install Serverless Framework
-      run: npm install -g serverless
+      run: npm install -g serverless@2.21.0
     - name: Install NPM dependencies
       run: npm install
     - name: Serverless Github Action
