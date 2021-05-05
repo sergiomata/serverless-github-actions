@@ -1,6 +1,5 @@
 
 service: cicd
-
 app: cicd
 org: sergiomatamoons
 
