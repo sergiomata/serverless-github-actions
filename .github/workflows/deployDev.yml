@@ -15,7 +15,7 @@ jobs:
       with:
         node-version: '10.x'
     - name: Create env file
-      run: | # cp sample.env.yml env.yml
+      run: | 
         cat > .env << EOF
         API_GATEWAY_ID='${{ secrets.API_GATEWAY_ID }}'
         API_GATEWAY_RESOURCE_ID='${{ secrets.API_GATEWAY_RESOURCE_ID }}'
@@ -30,6 +30,8 @@ jobs:
       uses: serverless/github-action@v1.53.0
     - name: Serverless AWS authentication
       run: sls config credentials --provider aws --key ${{ secrets.AWS_KEY }} --secret ${{ secrets.AWS_SECRET }}
+    - name: Run Tests
+      run: yarn test  
     - name: Deploy Lambda functions
       run: yarn deploy_dev
       env:
