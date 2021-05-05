@@ -26,7 +26,6 @@ provider:
     API_GATEWAY_RESOURCE_ID: ${env:API_GATEWAY_RESOURCE_ID}
     ENV: ${env:ENV}
     SERVERLESS_ACCESS_KEY: ${env:SERVERLESS_ACCESS_KEY}
-  profile: ${self:custom.profiles.${opt:stage,'dev'}}
 
 useDotenv: true
 
@@ -38,10 +37,6 @@ plugins:
   - serverless-s3-remover
 
 custom:
-  profiles:
-    dev: dev
-    prod: prod
-    staging: staging  
   webpack:
     packager: "npm" # Packager that will be used to package your external modules
     includeModules:

@@ -20,6 +20,7 @@ jobs:
         API_GATEWAY_ID='${{ secrets.API_GATEWAY_ID }}'
         API_GATEWAY_RESOURCE_ID='${{ secrets.API_GATEWAY_RESOURCE_ID }}'
         ENV='${{ secrets.ENV }}'
+        SERVERLESS_ACCESS_KEY='${{ secrets.SERVERLESS_ACCESS_KEY }}' 
         EOF
     - name: Install Serverless Framework
       run: npm install -g serverless@2.21.0
@@ -35,3 +36,4 @@ jobs:
         API_GATEWAY_ID: '${{ secrets.API_GATEWAY_ID }}'
         API_GATEWAY_RESOURCE_ID: '${{ secrets.API_GATEWAY_RESOURCE_ID }}'
         ENV: '${{ secrets.ENV }}'
+        SERVERLESS_ACCESS_KEY: '${{ secrets.SERVERLESS_ACCESS_KEY }}'
