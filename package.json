@@ -5,8 +5,8 @@
   "main": "handler.js",
   "scripts": {
     "test": "jest --setupFiles dotenv/config",
-    "dev": "sls offline --stage dev --env development",
-    "deploy_dev": "sls deploy --stage dev --env development",
+    "dev": "sls offline --stage dev --env development ",
+    "deploy_dev": "sls deploy --stage dev --env development ",
     "qa": "sls offline --stage qa --env qa",
     "deploy_qa": "sls deploy --stage qa --env qa",
     "prod": "sls offline --stage prod --env production",
@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "serverless-dotenv-plugin": "^3.9.0",
     "serverless-plugin-write-env-vars": "^1.0.2"
   },
   "devDependencies": {
